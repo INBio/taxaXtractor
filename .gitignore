@@ -1,6 +1,14 @@
+# generic java
 *.class
 
 # Package Files #
 *.jar
 *.war
 *.ear
+
+# mvn files
+target/
+
+# generics
+*~
+
