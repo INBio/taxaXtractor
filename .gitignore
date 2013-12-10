@@ -9,6 +9,8 @@
 # mvn files
 target/
 
-# generics
+# vim specific
 *~
+*.swp
+*.swo
 
