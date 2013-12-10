@@ -1,4 +1,9 @@
 package org.inbio.core.tree;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+
 /**
  * Implements the tree for the in-memory taxonomy 
  *
@@ -11,7 +16,14 @@ package org.inbio.core.tree;
 public class TaxaTree{
 
   private TaxaNode root;
-  private HashTable nodeList;
+  private Hashtable<String, TaxaNode> nodeList;
+
+  /* Constructor */
+  public TaxaTree(){
+    this.root = new TaxaNode("ROOT", "ROOT", TaxonRank.KINGDOM);
+    this.nodeList = new Hashtable<String, TaxaNode>();
+    this.nodeList.put("ROOT", this.root);
+  }
 
   /**
    * Search the tree for a node with some specific name
@@ -23,7 +35,7 @@ public class TaxaTree{
    *    The node found or null
    */
   public TaxaNode find(String taxonName){
-    return this.nodeList[taxonName];
+    return this.nodeList.get(taxonName);
   }
 
 
@@ -40,16 +52,16 @@ public class TaxaTree{
    */
   public TaxaNode find(TaxaNode root, String taxonName){
 
-    ArrayList<TaxonNode> children = root.getChildren();
-    TaxonNode node = null;
+    ArrayList<TaxaNode> children = root.getChildren();
+    TaxaNode node = null;
 
-    for(TaxonNode child: children){
-      if (child.getName().equals(taxonName))
+    for(TaxaNode child: children)
+      if (child.getTaxonName().equals(taxonName))
         node = child;
 
-      return node;
+    return node;
 
-    }
+  }
 
   /**
    * Add a children under the rootTaxonName
@@ -66,25 +78,36 @@ public class TaxaTree{
   public void addChild(String rootTaxonName, String taxonName, TaxonRank taxonRank){
 
     TaxaNode newNode = null;
+    TaxaNode nodePointer = null;
     TaxaNode father = null;
-      
+
+    // check if the element is already in the tree
+    nodePointer = this.nodeList.get(taxonName);
+
     // the new node of the tree
-    newNode = new TaxaNode(taxonName, taxonRank);
+    newNode = new TaxaNode(rootTaxonName, taxonName, taxonRank);
 
     // is the father already there?
     father = this.find(rootTaxonName);
 
     if (null != father){
       // is the son already there?
-      if ( this.find(father, taxonName) == null){ 
+      if ( this.find(father, taxonName) == null){
+
+        if(null != nodePointer ){
+          this.find(nodePointer.getFathersName()).removeChild(nodePointer);
+          newNode = nodePointer; 
+        }
+
         father.addChild(newNode);
       }
       // if there is no father in the tree. add the node to the root.
-    }else{ 
+    }else{
+      newNode.setFathersName("ROOT");
       this.root.addChild(newNode);
     }
 
-    this.nodeList[newNode.getName()] = newNode;
+    this.nodeList.put(newNode.getTaxonName(), newNode);
   }
 
   /**
@@ -92,7 +115,19 @@ public class TaxaTree{
    * taxonRank != TaxonRank.KINGDOM and tries to add it again somewhere else.
    */
   public void prune(){
+    ArrayList<TaxaNode> rootsChildren = null;
 
+    rootsChildren = this.root.getChildren();
+
+    for (TaxaNode child: rootsChildren){
+
+      if (child.getTaxonRank() != TaxonRank.KINGDOM){
+        // if the node is not inside the root, insert it;
+        if(null == this.find(child.getTaxonName())){
+
+        }
+      }
+    }
   }
 
   /**
@@ -101,72 +136,21 @@ public class TaxaTree{
    * @return List
    *    A list with the flat form of the tree
    */
-  public List flattenTree(){ }
-
-}
-
-class TaxaNode{
-  // name and rank for the current taxon.
-  private TaxonNode father;
-  private String taxonName;
-  private TaxonRank taxonRank;
-
-  // for the children of every node
-  private ArrayList<TaxaNode> children;
-
-
-  /** Costructor */
-  public TaxaNode(TaxonNode father, String name, TaxonRank taxonRank){
-    this.father = father;
-    this.taxonName = name;
-    this.taxonRank = taxonRank;
-    this.children = new ArrayList<TaxaNode>();
+  public List flattenTree(){
+    return null;
   }
 
-  /** Costructor */
-  public TaxaNode(String name, TaxonRank taxonRank){
-    this.father = null;
-    this.taxonName = name;
-    this.taxonRank = taxonRank;
-    this.children = new ArrayList<TaxaNode>();
-  }
+  public static void main(String[] args){
 
+    TaxaTree t = new TaxaTree();
 
-  /**
-   * Add a children to the current node
-   *
-   * @param t the child to be added
-   */
-  public void addChild(TaxaNode t){
-    this.children.add(t);
-  }
+    t.addChild("2","21" , TaxonRank.PHYLUM);
+    t.addChild("21","212" , TaxonRank.CLASS);
+    t.addChild("","2" , TaxonRank.KINGDOM);
+    t.addChild("2","21" , TaxonRank.PHYLUM);
+    t.addChild("21","212" , TaxonRank.PHYLUM);
 
-  /**
-   * Return a list of the children of the current taxon
-   */
-  public void getChildren(){
-    return this.children;
-  }
+    t.prune();
 
-  public void setTaxonName(String name){
-    this.taxonName = name;
-  }
-  public void setTaxonRank(TaxonRank rank){
-    this.taxonRank = rank;
-  }
-  public void setFather(TaxonNode father){
-    this.father = father;
-  }
-
-  public String getTaxonName(){
-    return this.taxonName;
-  }
-
-  public TaxonRank getTaxonRank(){
-    return this.taxonRank;
-  }
-
-  public TaxonNode getFather(){
-    return this.father;
   }
 }
