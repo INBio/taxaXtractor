@@ -91,14 +91,14 @@ public class TaxaTree{
     father = this.find(rootTaxonName);
 
     if (null != father){
+
+      if(null != nodePointer ){
+        this.find(nodePointer.getFathersName()).removeChild(nodePointer);
+        newNode = nodePointer;
+      }
+
       // is the son already there?
       if ( this.find(father, taxonName) == null){
-
-        if(null != nodePointer ){
-          this.find(nodePointer.getFathersName()).removeChild(nodePointer);
-          newNode = nodePointer; 
-        }
-
         father.addChild(newNode);
       }
       // if there is no father in the tree. add the node to the root.
