@@ -124,7 +124,7 @@ public class TaxaTree{
       if (child.getTaxonRank() != TaxonRank.KINGDOM){
         // if the node is not inside the root, insert it;
         if(null == this.find(child.getTaxonName())){
-
+          // TODO: This needs some thinking :D
         }
       }
     }
@@ -137,20 +137,29 @@ public class TaxaTree{
    *    A list with the flat form of the tree
    */
   public List flattenTree(){
-    return null;
+
+    return flattenNode(this.root);
   }
 
-  public static void main(String[] args){
+  public List flattenNode(TaxaNode root){
 
-    TaxaTree t = new TaxaTree();
+    TaxaNode t = null;
+    String[] current = null;
+    ArrayList<String[]> list = new ArrayList<String[]>();
 
-    t.addChild("2","21" , TaxonRank.PHYLUM);
-    t.addChild("21","212" , TaxonRank.CLASS);
-    t.addChild("","2" , TaxonRank.KINGDOM);
-    t.addChild("2","21" , TaxonRank.PHYLUM);
-    t.addChild("21","212" , TaxonRank.PHYLUM);
+    for(String key: this.nodeList.keySet()){
 
-    t.prune();
+        t = this.nodeList.get(key);
 
+        current = new String[3];
+
+        current[0] = t.getTaxonName(); // the name of the taxon
+        current[1] = t.getFathersName(); // the name of the father
+        current[2] = t.getTaxonRank().getName();
+
+        list.add(current);
+    }
+    
+    return list;
   }
 }
