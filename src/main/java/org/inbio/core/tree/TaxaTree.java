@@ -1,7 +1,7 @@
 package org.inbio.core.tree;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -16,12 +16,12 @@ import java.util.List;
 public class TaxaTree{
 
   private TaxaNode root;
-  private Hashtable<String, TaxaNode> nodeList;
+  private HashMap<String, TaxaNode> nodeList;
 
   /* Constructor */
   public TaxaTree(){
     this.root = new TaxaNode("ROOT", "ROOT", TaxonRank.KINGDOM);
-    this.nodeList = new Hashtable<String, TaxaNode>();
+    this.nodeList = new HashMap<String, TaxaNode>();
     this.nodeList.put("ROOT", this.root);
   }
 
