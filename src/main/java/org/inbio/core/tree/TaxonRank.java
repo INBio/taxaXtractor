@@ -18,7 +18,7 @@ public enum TaxonRank{
 
   public String name;
 
-  public TaxonRank(String n){
+  TaxonRank(String n){
     this.name = n;
   }
 }
