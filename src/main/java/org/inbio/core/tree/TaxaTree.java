@@ -111,33 +111,12 @@ public class TaxaTree{
   }
 
   /**
-   * The method get the children of the root, select all the nodes whit 
-   * taxonRank != TaxonRank.KINGDOM and tries to add it again somewhere else.
-   */
-  public void prune(){
-    ArrayList<TaxaNode> rootsChildren = null;
-
-    rootsChildren = this.root.getChildren();
-
-    for (TaxaNode child: rootsChildren){
-
-      if (child.getTaxonRank() != TaxonRank.KINGDOM){
-        // if the node is not inside the root, insert it;
-        if(null == this.find(child.getTaxonName())){
-          // TODO: This needs some thinking :D
-        }
-      }
-    }
-  }
-
-  /**
    * Make the tree flat.
    *
    * @return List
    *    A list with the flat form of the tree
    */
   public List flattenTree(){
-
     return flattenNode(this.root);
   }
 
@@ -246,4 +225,47 @@ public class TaxaTree{
     }
     return list;
   }
+
+  /**
+   * Run the
+   */
+  public List<TaxaNode[]> completeHierarchyPerTaxon(){
+
+    List<TaxaNode[]> completeHierarchy = new ArrayList<TaxaNode[]>();
+
+    TaxaNode t = null;
+    TaxaNode[] th = null;
+
+    for(String key: this.nodeList.keySet()){
+
+      t = this.nodeList.get(key);
+      if(TaxonRank.SPECIES == t.getTaxonRank()){
+
+        th = this.fullHierarchy(t);
+        completeHierarchy.add(th);
+      }
+    }
+
+    return completeHierarchy;
+  }
+
+  public TaxaNode[] fullHierarchy(TaxaNode taxon){
+      TaxaNode[] hierarchy = new TaxaNode[7];
+
+
+      hierarchy[6] = taxon;
+
+      for (int i = 5; i >= 0; i--){
+        taxon = this.nodeList.get(taxon.getFathersName());
+
+        if(null == taxon){
+            hierarchy[i] = new TaxaNode("ROOT", "Unknown", TaxonRank.KINGDOM);
+        }else{
+            hierarchy[i] = taxon;
+        }
+      }
+
+      return hierarchy;
+  }
+
 }
