@@ -150,16 +150,100 @@ public class TaxaTree{
     for(String key: this.nodeList.keySet()){
 
         t = this.nodeList.get(key);
+        if(TaxonRank.KINGDOM == t.getTaxonRank()){
 
-        current = new String[3];
+          current = new String[3];
+          current[0] = t.getTaxonName(); // the name of the taxon
+          current[1] = t.getFathersName(); // the name of the father
+          current[2] = t.getTaxonRank().getName();
 
-        current[0] = t.getTaxonName(); // the name of the taxon
-        current[1] = t.getFathersName(); // the name of the father
-        current[2] = t.getTaxonRank().getName();
+          list.add(current);
+        }
+    }
 
-        list.add(current);
+    for(String key: this.nodeList.keySet()){
+
+        t = this.nodeList.get(key);
+        if(TaxonRank.PHYLUM == t.getTaxonRank()){
+
+          current = new String[3];
+          current[0] = t.getTaxonName(); // the name of the taxon
+          current[1] = t.getFathersName(); // the name of the father
+          current[2] = t.getTaxonRank().getName();
+
+          list.add(current);
+        }
+    }
+
+    for(String key: this.nodeList.keySet()){
+
+        t = this.nodeList.get(key);
+        if(TaxonRank.CLASS == t.getTaxonRank()){
+
+          current = new String[3];
+          current[0] = t.getTaxonName(); // the name of the taxon
+          current[1] = t.getFathersName(); // the name of the father
+          current[2] = t.getTaxonRank().getName();
+
+          list.add(current);
+        }
+    }
+
+    for(String key: this.nodeList.keySet()){
+
+        t = this.nodeList.get(key);
+        if(TaxonRank.ORDER == t.getTaxonRank()){
+
+          current = new String[3];
+          current[0] = t.getTaxonName(); // the name of the taxon
+          current[1] = t.getFathersName(); // the name of the father
+          current[2] = t.getTaxonRank().getName();
+
+          list.add(current);
+        }
     }
     
+    for(String key: this.nodeList.keySet()){
+
+        t = this.nodeList.get(key);
+        if(TaxonRank.FAMILY == t.getTaxonRank()){
+
+          current = new String[3];
+          current[0] = t.getTaxonName(); // the name of the taxon
+          current[1] = t.getFathersName(); // the name of the father
+          current[2] = t.getTaxonRank().getName();
+
+          list.add(current);
+        }
+    }
+
+    for(String key: this.nodeList.keySet()){
+
+        t = this.nodeList.get(key);
+        if(TaxonRank.GENUS == t.getTaxonRank()){
+
+          current = new String[3];
+          current[0] = t.getTaxonName(); // the name of the taxon
+          current[1] = t.getFathersName(); // the name of the father
+          current[2] = t.getTaxonRank().getName();
+
+          list.add(current);
+        }
+    }
+
+    for(String key: this.nodeList.keySet()){
+
+        t = this.nodeList.get(key);
+        if(TaxonRank.SPECIES == t.getTaxonRank()){
+
+          current = new String[3];
+          current[0] = t.getTaxonName(); // the name of the taxon
+          current[1] = t.getFathersName(); // the name of the father
+          current[2] = t.getTaxonRank().getName();
+
+          list.add(current);
+        }
+    }
     return list;
   }
 }

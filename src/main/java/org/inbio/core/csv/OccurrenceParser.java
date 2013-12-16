@@ -26,7 +26,6 @@ public class OccurrenceParser{
 
       while ((line = br.readLine()) != null) {
 
-        line = line.toLowerCase();
         fields = line.split("\t");
 
         t.addChild("ROOT", fields[9], TaxonRank.KINGDOM);
@@ -35,7 +34,7 @@ public class OccurrenceParser{
         t.addChild(fields[11], fields[12], TaxonRank.ORDER);
         t.addChild(fields[12], fields[13], TaxonRank.FAMILY);
         t.addChild(fields[13], fields[14], TaxonRank.GENUS);
-        t.addChild(fields[14], fields[15], TaxonRank.SPECIES);
+        t.addChild(fields[14], "\""+fields[6]+"\"", TaxonRank.SPECIES);
 //      System.out.println(lineNumber+":\t"+fields[15]);
      
       }
