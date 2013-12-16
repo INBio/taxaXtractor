@@ -11,6 +11,9 @@ import org.inbio.core.xls.CSVWriter;
  * Parse the options and run the program.
  */
 public class TaxaXtractor{
+/*
+ * Print the tree in the format
+ *   <Taxon,Parent,Rank>
   public static void main(String[] args){
 
     List l = null;
@@ -23,5 +26,19 @@ public class TaxaXtractor{
     l = t.flattenTree();
 
     x.printFlattenTree(l, "/home/asanabria/taxonomy.csv");
+  }
+  */
+  public static void main(String[] args){
+
+    List l = null;
+    TaxaTree t = null;
+
+    OccurrenceParser o = new OccurrenceParser();
+    CSVWriter x = new CSVWriter();
+
+    t = o.parse("/home/asanabria/occurrence.txt");
+    l = t.completeHierarchyPerTaxon();
+
+    x.printFullTaxonmyPerLine(l, "/home/asanabria/taxonomy.csv");
   }
 }
