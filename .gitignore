@@ -14,3 +14,7 @@ target/
 .*.swp
 .*.swo
 
+# eclipse
+.project
+.classpath
+.settings
