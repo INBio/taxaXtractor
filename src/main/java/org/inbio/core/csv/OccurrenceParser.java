@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 import org.inbio.core.tree.TaxaTree;
 import org.inbio.core.tree.TaxonRank;
+import org.inbio.core.csv.Dwca;
 
 /**
  * Implement the csv parser to read the occurrence.txt files in the 
@@ -28,14 +29,14 @@ public class OccurrenceParser{
 
         fields = line.split("\t");
 
-        t.addChild("ROOT", fields[9], TaxonRank.KINGDOM);
-        t.addChild(fields[9], fields[10], TaxonRank.PHYLUM);
-        t.addChild(fields[10], fields[11], TaxonRank.CLASS);
-        t.addChild(fields[11], fields[12], TaxonRank.ORDER);
-        t.addChild(fields[12], fields[13], TaxonRank.FAMILY);
-        t.addChild(fields[13], fields[14], TaxonRank.GENUS);
-        t.addChild(fields[14], "\""+fields[6]+"\"", TaxonRank.SPECIES);
-//      System.out.println(lineNumber+":\t"+fields[15]);
+        t.addChild("ROOT",       fields[Dwca.KINGDOM.getColumn()],   TaxonRank.KINGDOM);
+        t.addChild(fields[Dwca.KINGDOM.getColumn()],    fields[Dwca.PHYLUM.getColumn()],    TaxonRank.PHYLUM);
+        t.addChild(fields[Dwca.PHYLUM.getColumn()],     fields[Dwca.CLASS.getColumn()],     TaxonRank.CLASS);
+        t.addChild(fields[Dwca.CLASS.getColumn()],      fields[Dwca.ORDER.getColumn()],     TaxonRank.ORDER);
+        t.addChild(fields[Dwca.ORDER.getColumn()],      fields[Dwca.FAMILY.getColumn()],    TaxonRank.FAMILY);
+        t.addChild(fields[Dwca.FAMILY.getColumn()],     fields[Dwca.GENUS.getColumn()],     TaxonRank.GENUS);
+        t.addChild(fields[Dwca.GENUS.getColumn()], "\""+fields[Dwca.SPECIES.getColumn()]+"\"", TaxonRank.SPECIES);
+//      System.out.println(lineNumber+":\t"+Dwca.);
      
       }
 
