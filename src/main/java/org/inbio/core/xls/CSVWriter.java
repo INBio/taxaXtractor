@@ -1,8 +1,14 @@
 package org.inbio.core.xls;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.List;
+
 import org.inbio.core.tree.TaxaNode;
 
 /**
@@ -86,5 +92,60 @@ public class CSVWriter{
       }
 
     }
+  }
+  
+  public void printBreadthFirst(List<Object[]> list, String filename) {
+    OutputStream fis = null;
+    BufferedWriter br = null;
+    try {
+      fis = new FileOutputStream(filename);
+      br = new BufferedWriter(new OutputStreamWriter(fis, Charset.forName("UTF-8")));
+      
+      for(Object[] node: list) {
+        String path = (String)node[0];
+        TaxaNode taxon = (TaxaNode)node[1];
+        String line = "";
+        // nodeId
+        line += taxon.getNodeId().toString();
+        line += ",";
+        // fatherId
+        line += taxon.getFatherId() == null? "" : taxon.getFatherId().toString();
+        line += ",";
+        // path
+        if (path != "") {
+          line += path;
+          line += ",";
+        }
+        // taxonName
+        line += taxon.getTaxonName();
+        // fix number of ',' to make a proper csv
+        int count = line.length() - line.replace(",", "").length();
+        for (int i = count; i < 8; i++){
+          line += ",";
+        }
+        if (taxon.getTaxonRank().getName() != "species" ) {
+          // scientificName = lower name 
+          line += taxon.getTaxonName();
+        }
+        // taxonRank
+        line += ",";
+        line += taxon.getTaxonRank().getName();
+        br.write(line);
+        br.write("\n");
+      }
+      
+    } catch (FileNotFoundException ex) {
+      System.out.println(ex.getMessage());
+    } catch (IOException ex) {
+      System.out.println(ex.getMessage());
+    }finally{
+      try {
+        br.close();
+      } catch (IOException ex) {
+        System.out.println(ex.getMessage());
+      }
+
+    }
+
   }
 }

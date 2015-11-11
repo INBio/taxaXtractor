@@ -1,9 +1,10 @@
 package org.inbio.core.tree;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TaxaNode{
+  private Integer nodeId;
+  private Integer fatherId;
   // name and rank for the current taxon.
   private String fathersName;
   private String taxonName;
@@ -13,11 +14,14 @@ public class TaxaNode{
   private ArrayList<TaxaNode> children;
 
 
-  /** Constructor */
-  public TaxaNode(String fathersName, String name, TaxonRank taxonRank){
+  /** Constructor 
+   * */
+  public TaxaNode(String fathersName, String name, TaxonRank taxonRank, Integer nodeId, Integer fatherId){
     this.fathersName = fathersName;
     this.taxonName = name;
     this.taxonRank = taxonRank;
+    this.nodeId = nodeId;
+    this.fatherId = fatherId;
     this.children = new ArrayList<TaxaNode>();
   }
 
@@ -68,5 +72,26 @@ public class TaxaNode{
   public TaxonRank getTaxonRank(){
     return this.taxonRank;
   }
+
+
+  public Integer getNodeId() {
+    return nodeId;
+  }
+
+
+  public void setNodeId(Integer nodeId) {
+    this.nodeId = nodeId;
+  }
+
+
+  public Integer getFatherId() {
+    return fatherId;
+  }
+
+
+  public void setFatherId(Integer fatherId) {
+    this.fatherId = fatherId;
+  }
+  
 
 }

@@ -2,7 +2,9 @@ package org.inbio.core.tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Implements the tree for the in-memory taxonomy 
@@ -17,12 +19,14 @@ public class TaxaTree{
 
   private TaxaNode root;
   private HashMap<String, TaxaNode> nodeList;
+  private Integer nextId; // return next id value to use has nodeId
 
   /* Constructor */
   public TaxaTree(){
-    this.root = new TaxaNode("ROOT", "ROOT", TaxonRank.KINGDOM);
+    this.root = new TaxaNode("ROOT", "ROOT", TaxonRank.KINGDOM, null, null);
     this.nodeList = new HashMap<String, TaxaNode>();
     this.nodeList.put("ROOT", this.root);
+    this.nextId = 1;
   }
 
   /**
@@ -82,21 +86,20 @@ public class TaxaTree{
     TaxaNode father = null;
 
     // check if the element is already in the tree
-    nodePointer = this.nodeList.get(taxonName);
-
-    // the new node of the tree
-    newNode = new TaxaNode(rootTaxonName, taxonName, taxonRank);
+    if (null != this.nodeList.get(taxonName))
+    	return;
+//    nodePointer = this.nodeList.get(taxonName);
 
     // is the father already there?
     father = this.find(rootTaxonName);
+    
+    // the new node of the tree
+    newNode = new TaxaNode(rootTaxonName, taxonName, taxonRank, this.nextId++, null);
 
     if (null != father){
 
-      if(null != nodePointer ){
-        this.find(nodePointer.getFathersName()).removeChild(nodePointer);
-        newNode = nodePointer;
-      }
-
+      newNode.setFatherId(father.getNodeId());
+      
       // is the son already there?
       if ( this.find(father, taxonName) == null){
         father.addChild(newNode);
@@ -259,7 +262,7 @@ public class TaxaTree{
         taxon = this.nodeList.get(taxon.getFathersName());
 
         if(null == taxon){
-            hierarchy[i] = new TaxaNode("ROOT", "Unknown", TaxonRank.KINGDOM);
+            hierarchy[i] = new TaxaNode("ROOT", "Unknown", TaxonRank.KINGDOM, null, null);
         }else{
             hierarchy[i] = taxon;
         }
@@ -268,4 +271,31 @@ public class TaxaTree{
       return hierarchy;
   }
 
+  /**
+   *  Traverse the tree breadth first = level by level left to right
+   * @return  A list of arrays of the form { String, TaxaNode }
+   *          where <code>String</code> contains the path to the node.
+   */
+  public List<Object[]> breadthFirstList() {
+    List<Object[]> list = new ArrayList<Object[]>();
+    Queue<Object[]> queue = new LinkedList<Object[]>();
+
+    for (TaxaNode node : this.root.getChildren()) {
+      queue.offer(new Object[]{"", node});
+    }
+
+    while (!queue.isEmpty()) {
+      Object[] object = queue.poll();
+      TaxaNode node 	= (TaxaNode)object[1];
+      String path 	= (String)object[0];
+      String newPath 	= path == "" ? node.getTaxonName() : path + "," + node.getTaxonName();
+      list.add(new Object[]{path,node});
+      for (TaxaNode taxaNode : node.getChildren()) {
+        queue.offer(new Object[]{newPath, taxaNode});
+      }
+    }
+
+    return list;
+  }
+  
 }

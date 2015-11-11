@@ -32,13 +32,16 @@ public class TaxaXtractor{
 
     List l = null;
     TaxaTree t = null;
+    List<Object[]> breadthFirst = null;
 
     OccurrenceParser o = new OccurrenceParser();
     CSVWriter x = new CSVWriter();
-
-    t = o.parse("/home/asanabria/occurrence.txt");
+    
+    t = o.parse(args[0]);
     l = t.completeHierarchyPerTaxon();
-
-    x.printFullTaxonmyPerLine(l, "/home/asanabria/taxonomy.csv");
+    
+    breadthFirst = t.breadthFirstList();
+    x.printBreadthFirst(breadthFirst, args[1]);
+//    x.printFullTaxonmyPerLine(l, args[1]);
   }
 }
