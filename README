@@ -2,3 +2,11 @@ taxaXtractor
 ============
 
 Parse a DwC-A file and write a csv file with treelike taxa structure
+
+Create jar file
+$ mvn clean package
+
+Run the application
+java -jar taxaXtractor-1.0-SNAPSHOT.jar inputfile.txt outputfile.csv
+
+
