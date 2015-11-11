@@ -46,7 +46,7 @@ public class OccurrenceParser{
       while ((line = br.readLine()) != null) {
         currentLine++;
         CSVParser parser;
-        String kingdom, phylum = null, class_ = null, order = null, family = null, genus = null, species = null;
+        String kingdom, phylum = null, class_ = null, order = null, family = null, genus = null, species = null, taxonRank = null, subspecies = null;
 //        CSVRecord record;
         fields = line.split("\t");
         
@@ -57,6 +57,11 @@ public class OccurrenceParser{
         
         kingdom  = fields[Dwca.KINGDOM.getColumn()];
         species  = fields[Dwca.SPECIES.getColumn()];
+        taxonRank = fields[Dwca.TAXONRANK.getColumn()];
+
+        if (taxonRank.equals("SUBSPECIES")) {
+            species += " " + fields[Dwca.INFRASPECIFIC_EPITHET.getColumn()];
+        }
         
         if (uniqueSpecies.contains(kingdom + species)) {
           // repeat key
@@ -75,7 +80,7 @@ public class OccurrenceParser{
         HashMap<String, Object> gbifResult = speciesGbifApi.Match(null, species, false, true, taxonomy);
 
 
-       // System.out.println("Search gbif " + species + "|" + taxonomy);
+        System.out.println("Search gbif " + species + "|" + taxonomy);
 
        /* if(gbifResult.containsKey("rank") && gbifResult.get("rank").toString().equals("SPECIES")) {
             System.out.println(gbifResult);
@@ -84,7 +89,9 @@ public class OccurrenceParser{
         
         try {
           kingdom = gbifResult.get("kingdom").toString();
-          species = gbifResult.get("canonicalName").toString();
+          species = gbifResult.get("species").toString();
+          if(taxonRank.equals("SUBSPECIES"))
+              subspecies = gbifResult.get("canonicalName").toString();
           if (gbifResult.containsKey("phylum"))
             phylum   = gbifResult.get("phylum").toString();
           else
@@ -124,13 +131,14 @@ public class OccurrenceParser{
           continue;
         }
 
-        t.addChild("ROOT",  kingdom,   TaxonRank.KINGDOM);
-        t.addChild(kingdom, phylum,    TaxonRank.PHYLUM);
+        t.addChild("ROOT",  kingdom,    TaxonRank.KINGDOM);
+        t.addChild(kingdom, phylum,     TaxonRank.PHYLUM);
         t.addChild(phylum,  class_,     TaxonRank.CLASS);
-        t.addChild(class_,  order,     TaxonRank.ORDER);
-        t.addChild(order,   family,    TaxonRank.FAMILY);
-        t.addChild(family,  genus,     TaxonRank.GENUS);
-        t.addChild(genus,   "\""+species+"\"", TaxonRank.SPECIES);
+        t.addChild(class_,  order,      TaxonRank.ORDER);
+        t.addChild(order,   family,     TaxonRank.FAMILY);
+        t.addChild(family,  genus,      TaxonRank.GENUS);
+        t.addChild(genus,   species,    TaxonRank.SPECIES);
+        t.addChild(species, subspecies, TaxonRank.SUBSPECIES);
 //      System.out.println(lineNumber+":\t"+Dwca.);
         if (currentLine % 10000 == 0)
           System.out.println(currentLine.toString() + " líneas procesadas");

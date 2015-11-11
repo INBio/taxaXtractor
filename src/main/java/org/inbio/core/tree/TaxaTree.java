@@ -242,7 +242,8 @@ public class TaxaTree{
     for(String key: this.nodeList.keySet()){
 
       t = this.nodeList.get(key);
-      if(TaxonRank.SPECIES == t.getTaxonRank()){
+      if(TaxonRank.SPECIES == t.getTaxonRank() || 
+         TaxonRank.SUBSPECIES == t.getTaxonRank()){
 
         th = this.fullHierarchy(t);
         completeHierarchy.add(th);
