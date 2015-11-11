@@ -12,7 +12,7 @@ public enum Dwca{
   ORDER(157),
   FAMILY(92),
   GENUS(99),
-  SPECIES(219),
+  SPECIES(218),
   INFRASPECIFIC_EPITHET(122);
 
   private int column;

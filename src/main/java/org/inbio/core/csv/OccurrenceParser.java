@@ -73,6 +73,14 @@ public class OccurrenceParser{
         
         SpeciesGbifAPI speciesGbifApi = new SpeciesGbifAPI();
         HashMap<String, Object> gbifResult = speciesGbifApi.Match(null, species, false, true, taxonomy);
+
+
+       // System.out.println("Search gbif " + species + "|" + taxonomy);
+
+       /* if(gbifResult.containsKey("rank") && gbifResult.get("rank").toString().equals("SPECIES")) {
+            System.out.println(gbifResult);
+            System.out.println("");
+        }*/
         
         try {
           kingdom = gbifResult.get("kingdom").toString();
@@ -125,7 +133,7 @@ public class OccurrenceParser{
         t.addChild(genus,   "\""+species+"\"", TaxonRank.SPECIES);
 //      System.out.println(lineNumber+":\t"+Dwca.);
         if (currentLine % 10000 == 0)
-          System.out.print(currentLine.toString() + " líneas procesadas\r");
+          System.out.println(currentLine.toString() + " líneas procesadas");
       }
       
 //      while ((line = br.readLine()) != null) {

@@ -42,6 +42,6 @@ public class TaxaXtractor{
     
     breadthFirst = t.breadthFirstList();
     x.printBreadthFirst(breadthFirst, args[1]);
-//    x.printFullTaxonmyPerLine(l, args[1]);
+   // x.printFullTaxonmyPerLine(l, args[1]);
   }
 }
