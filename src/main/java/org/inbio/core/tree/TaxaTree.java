@@ -289,7 +289,13 @@ public class TaxaTree{
       Object[] object = queue.poll();
       TaxaNode node 	= (TaxaNode)object[1];
       String path 	= (String)object[0];
-      String newPath 	= path == "" ? node.getTaxonName() : path + "," + node.getTaxonName();
+      String newPath;
+      // avoid include species (scientific name) in the path
+      // this way subspecies works fine
+      if(node.getTaxonRank() != TaxonRank.SPECIES)
+          newPath 	= path == "" ? node.getTaxonName() : path + "," + node.getTaxonName();
+      else
+          newPath = path;
       list.add(new Object[]{path,node});
       for (TaxaNode taxaNode : node.getChildren()) {
         queue.offer(new Object[]{newPath, taxaNode});

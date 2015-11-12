@@ -10,6 +10,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import org.inbio.core.tree.TaxaNode;
+import org.inbio.core.tree.TaxonRank;
 
 /**
  * Implements the tree for the in-memory taxonomy 
@@ -117,15 +118,23 @@ public class CSVWriter{
           line += ",";
         }
         // taxonName
-        line += taxon.getTaxonName();
+        if (taxon.getTaxonRank() == TaxonRank.SPECIES ||
+            taxon.getTaxonRank() == TaxonRank.SUBSPECIES) {
+            line += "\"" + taxon.getTaxonName() + "\"";
+        }
+        else {
+            line += taxon.getTaxonName();
+        }
         // fix number of ',' to make a proper csv
         int count = line.length() - line.replace(",", "").length();
         for (int i = count; i < 8; i++){
           line += ",";
         }
-        if (taxon.getTaxonRank().getName() != "species" ) {
+        if (!taxon.getTaxonRank().getName().equals("species") && 
+            !taxon.getTaxonRank().getName().equals( "subspecies")) {
           // scientificName = lower name 
-          line += taxon.getTaxonName();
+            System.out.println(taxon.getTaxonRank().getName());
+            line += taxon.getTaxonName();
         }
         // taxonRank
         line += ",";

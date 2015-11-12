@@ -5,6 +5,7 @@
         <files>
             <location>outputfile.csv</location>
         </files>
+        <id index="0" />
         <field index="0" term="http://rs.tdwg.org/dwc/terms/taxonID"/>
         <field index="1" term="http://rs.tdwg.org/dwc/terms/parentNameUsageID"/>
         <field index="2" term="http://rs.tdwg.org/dwc/terms/kingdom"/>
