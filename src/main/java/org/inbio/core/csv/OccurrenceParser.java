@@ -80,7 +80,7 @@ public class OccurrenceParser{
         HashMap<String, Object> gbifResult = speciesGbifApi.Match(null, species, false, true, taxonomy);
 
 
-        System.out.println("Search gbif " + species + "|" + taxonomy);
+        System.out.print("Search gbif " + species + "|" + taxonomy + "\r");
 
        /* if(gbifResult.containsKey("rank") && gbifResult.get("rank").toString().equals("SPECIES")) {
             System.out.println(gbifResult);

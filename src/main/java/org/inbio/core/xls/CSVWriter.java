@@ -133,7 +133,7 @@ public class CSVWriter{
         if (!taxon.getTaxonRank().getName().equals("species") && 
             !taxon.getTaxonRank().getName().equals( "subspecies")) {
           // scientificName = lower name 
-            System.out.println(taxon.getTaxonRank().getName());
+          //  System.out.println(taxon.getTaxonRank().getName());
             line += taxon.getTaxonName();
         }
         // taxonRank
